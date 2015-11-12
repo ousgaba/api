@@ -9,8 +9,21 @@ server.use(restify.queryParser())
 server.use(restify.bodyParser())
 server.use(restify.authorizationParser())
 
+var request = require('request')
+
  
 var customers = require('./stocks.js')
+
+console.log("Fecthing Data")
+
+request.get("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20%3D%20%22goog%22&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys", function(err, res, body) {
+  if (err) {
+    console.log("Error")
+  }
+  console.log(body)
+  
+})
+
 
 server.get('/stockmarket', function(req, res) {
   console.log('GET /stockmarket')
@@ -26,6 +39,8 @@ server.get('/stockmarket', function(req, res) {
   })
 })
 
+console.log("Done")
+/*
 server.get('/stockmarket2', function(req, res) {
   yahooFinance.historical ({
     symbol: 'AAPL',
@@ -35,3 +50,14 @@ server.get('/stockmarket2', function(req, res) {
   res.send(quotes);
 });
 })
+
+ */
+ 
+var port = process.env.PORT || 8080;
+server.listen(port, function (err) {
+  if (err) {
+      console.error(err);
+  } else {
+    console.log('App is ready at : ' + port)}
+  })
+

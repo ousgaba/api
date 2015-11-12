@@ -1,0 +1,19 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "preferGlobal": true,
+  "description": "my project api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ousman",
+  "license": "ISC"
+}
+"dependencies": {
+    "fs": "0.0.2",
+    "restify": "^4.0.3",
+    "yahoo-finance": "^0.2.12",
+    "xml2json": "12:1" 
+  }
+}

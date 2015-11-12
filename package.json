@@ -1,0 +1,25 @@
+{
+  "name": "workspace",
+  "version": "1.0.0",
+  "description": ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ousgaba/api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ousgaba/api/issues"
+  },
+  "homepage": "https://github.com/ousgaba/api#readme",
+  "dependencies": {
+    "fs": "0.0.2",
+    "restify": "^4.0.3",
+    "yahoo-finance": "^0.2.12"
+    "xml2json":
+  }
+}
