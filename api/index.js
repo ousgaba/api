@@ -14,8 +14,6 @@ var request = require('request')
  
 var customers = require('./stocks.js')
 
-console.log("Fecthing Data")
-
 request.get("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20%3D%20%22goog%22&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys", function(err, res, body) {
   if (err) {
     console.log("Error")
@@ -39,20 +37,21 @@ server.get('/stockmarket', function(req, res) {
   })
 })
 
-console.log("Done")
-/*
-server.get('/stockmarket2', function(req, res) {
-  yahooFinance.historical ({
-    symbol: 'AAPL',
-    from: '2012-01-01',
-    to: '2012-12-31',
-}, function (err, quotes) {
-  res.send(quotes);
-});
+server.post('/stockmarket', function(req, res) {
+  console.log('POST /')
+  const auth = req.authorization
+  const body = req.body
+  const host = req.headers.host
+  console.log(typeof req.files)
+  customers.add(host, auth, body, req.files, function(data) {
+    console.log('DATA RETURNED')
+    console.log(data)
+    res.setHeader('content-type', 'application/json');
+    res.send(data.code, data.response);
+    res.end();
+  })
 })
 
- */
- 
 var port = process.env.PORT || 8080;
 server.listen(port, function (err) {
   if (err) {
