@@ -1,9 +1,15 @@
+//require('./mongo.js');
+
+//var mongo = require('./mongo.js');
 var fs = require('fs');
 var yahooFinance = require("yahoo-finance");
-
 var restify = require('restify')
-var server = restify.createServer()
 
+const stdin = process.openStdin()
+require('./mongo.js');
+var mongo = require('./mongo.js');
+
+var server = restify.createServer()
 server.use(restify.fullResponse())
 server.use(restify.queryParser())
 server.use(restify.bodyParser())
@@ -37,21 +43,6 @@ server.get('/stockmarket', function(req, res) {
   })
 })
 
-server.post('/stockmarket', function(req, res) {
-  console.log('POST /')
-  const auth = req.authorization
-  const body = req.body
-  const host = req.headers.host
-  console.log(typeof req.files)
-  customers.add(host, auth, body, req.files, function(data) {
-    console.log('DATA RETURNED')
-    console.log(data)
-    res.setHeader('content-type', 'application/json');
-    res.send(data.code, data.response);
-    res.end();
-  })
-})
-
 var port = process.env.PORT || 8080;
 server.listen(port, function (err) {
   if (err) {
@@ -60,3 +51,39 @@ server.listen(port, function (err) {
     console.log('App is ready at : ' + port)}
   })
 
+stdin.on('data', function(chunk) {
+  console.log(typeof chunk)
+  var text = chunk.toString().trim()
+  console.log(typeof text)
+  
+  if (text.indexOf('add ') === 0) {
+    var space = text.indexOf(' ')
+    var item = text.substring(space+1).trim()
+    console.log('adding "'+item+'"')
+    /* notice the use of 'arrow function' syntax to define the anonymous function parameter. */
+    mongo.addList(item, data => {
+        console.log('returned: '+data)
+    })
+  }
+  
+  if (text.indexOf('get ') === 0) {
+    var space = text.indexOf(' ')
+    var item = text.substring(space+1).trim()
+    console.log('finding: ID "'+item+'"')
+    mongo.getById(item, data => {
+        console.log(data)
+    })
+  }
+  
+  if (text.indexOf('list') === 0) {
+    mongo.getAll( data => {
+        console.log(data)
+    })
+  }
+  
+  if (text.indexOf('clear') === 0) {
+    mongo.clear( data => {
+        console.log(data)
+    })
+  }
+})
